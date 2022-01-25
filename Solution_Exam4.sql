@@ -1,7 +1,8 @@
-SELECT c.CustomerID, st.TerritoryID, st.Name, DATE(soh.OrderDate) as order_date
-FROM salesorderheader soh
-LEFT JOIN customer c ON soh.CustomerID = c.CustomerID
-LEFT JOIN salesterritory st ON st.TerritoryID = c.TerritoryID
-WHERE soh.OrderDate >= '2001-09-01' - interval 30 day
+SELECT 
+c.CustomerID,  st.TerritoryID, st.Name
+FROM customer c
+LEFT JOIN salesterritory st ON c.TerritoryID =  st.TerritoryID
+WHERE c.CustomerID NOT IN (SELECT CustomerID FROM salesorderheader
+WHERE OrderDate BETWEEN '2002-07-16' AND '2002-08-16')
 GROUP BY st.TerritoryID, c.CustomerID
 ORDER BY st.TerritoryID, c.CustomerID

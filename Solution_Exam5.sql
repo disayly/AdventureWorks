@@ -3,12 +3,10 @@ st.TerritoryID,
 st.Name,
 SUM(sod.OrderQty * sod.UnitPrice) as Sales,
 MONTHNAME(soh.ShipDate) as Month,
-Year(soh.ShipDate) as Year,
-soh.ShipDate
+Year(soh.ShipDate) as Year
 FROM salesterritory st
-LEFT JOIN salesorderheader soh ON soh.TerritoryID = st.TerritoryID
-LEFT JOIN salesorderdetail sod ON sod.SalesOrderID = soh.SalesOrderID
-WHERE soh.shipDate >= '2001-07-15 00:00:00' - interval 7 day
-#WHERE soh.TerritoryID = 5
-GROUP BY st.TerritoryID, Year, Month
-ORDER BY  Year, Month, st.TerritoryID,  Sales DESC
+LEFT JOIN salesorderheader soh ON st.TerritoryID = soh.TerritoryID 
+LEFT JOIN salesorderdetail sod ON soh.SalesOrderID = sod.SalesOrderID
+WHERE soh.shipDate > '2001-07-16' - interval 7 day
+GROUP BY Year(soh.ShipDate), Month(soh.ShipDate), st.TerritoryID
+ORDER BY Year(soh.ShipDate), Month(soh.ShipDate) ASC
